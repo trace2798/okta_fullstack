@@ -1,0 +1,159 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+enum UserType {
+  FREE
+  PRO
+  ENTERPRISE
+  TEAM
+  CORETEAM
+}
+
+model User {
+  id                     String    @id @default(uuid())
+  authId                 String    @unique //auth0 user id   
+  email                  String    @unique
+  emailVerified          DateTime?
+  name                   String
+  imageUrl               String    @db.Text
+  files                  File[]
+  messages               Message[]
+  orgs                   Org?      @relation(fields: [orgId], references: [id])
+  orgId                  String?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
+  stripePriceId          String?   @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
+  userType               UserType  @default(FREE)
+  active                 Boolean?  @default(true)
+  accounts               Account[]
+
+  sessions Session[]
+
+  @@index([orgId])
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+enum UploadStatus {
+  PENDING
+  PROCESSING
+  FAILED
+  SUCCESS
+}
+
+enum IndexStatus {
+  PENDING
+  PROCESSING
+  FAILED
+  SUCCESS
+}
+
+model File {
+  id   String @id @default(uuid())
+  name String
+
+  uploadStatus UploadStatus @default(PENDING)
+
+  url         String
+  key         String
+  messages    Message[]
+  indexes     Index[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  User        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String?
+  Org         Org?      @relation(fields: [orgId], references: [id])
+  orgId       String?
+  indexStatus Boolean   @default(false)
+
+  pageAmt     Int? @default(0)
+  totalChunks Int? @default(0)
+
+  @@index([userId])
+  @@index([orgId])
+}
+
+model Index {
+  id          String      @id @default(uuid())
+  name        String
+  indexStatus IndexStatus @default(PENDING)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  File        File?       @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  fileId      String?
+
+  @@index([fileId])
+}
+
+model Message {
+  id            String   @id @default(uuid())
+  text          String   @db.Text()
+  isUserMessage Boolean
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  User          User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String?
+  File          File?    @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  fileId        String?
+
+  @@index([userId])
+  @@index([fileId])
+}
+
+model Org {
+  id                     String   @id @default(uuid())
+  name                   String   @unique
+  domain                 String   @unique
+  issuer                 String   @default("")
+  authorization_endpoint String   @default("")
+  token_endpoint         String   @default("")
+  userinfo_endpoint      String   @default("")
+  client_id              String   @default("")
+  client_secret          String   @default("")
+  apikey                 String
+  File                   File[]
+  User                   User[]
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
