@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import Input from "./input";
 import AuthSocialButton from "./auth-social-button";
-import { Bs0Square, BsGoogle } from "react-icons/bs";
+import { SiOkta } from "react-icons/si";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Label } from "./ui/label";
 
@@ -149,7 +149,7 @@ const AuthForm = () => {
             type="password"
           />
           <div>
-            <Button disabled={isLoading}>
+            <Button disabled={isLoading} variant="outline">
               {variant === "LOGIN" ? "Sign in" : "Register"}
             </Button>
           </div>
@@ -162,7 +162,7 @@ const AuthForm = () => {
 
           <div className="mt-6 flex gap-2">
             <AuthSocialButton
-              icon={Bs0Square}
+              icon={SiOkta}
               onClick={() => socialAction("okta")}
               label="Continue with Okta"
             />
