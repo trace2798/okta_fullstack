@@ -40,6 +40,23 @@ const getCurrentUser = async () => {
         });
       }
     }
+    if (!currentUser.hashedPassword) {
+      // If the user has both authId and orgId, set userType to ENTERPRISE
+      if (
+        currentUser.authId &&
+        currentUser.orgId &&
+        currentUser.userType !== "ENTERPRISE"
+      ) {
+        const updateType = await db.user.update({
+          where: {
+            id: currentUser.id,
+          },
+          data: {
+            userType: "ENTERPRISE",
+          },
+        });
+      }
+    }
 
     return currentUser;
   } catch (error: any) {

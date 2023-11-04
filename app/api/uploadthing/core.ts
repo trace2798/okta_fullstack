@@ -13,14 +13,14 @@ import getCurrentUser from "@/actions/getCurrentuser";
 const f = createUploadthing();
 
 const middleware = async () => {
-const user = await getCurrentUser()
+  const user = await getCurrentUser();
 
   if (!user) throw new Error("Unauthorized");
 
   //   const subscriptionPlan = await getUserSubscriptionPlan();
   const subscriptionPlan = true;
-
-  return { subscriptionPlan, userId: user.id };
+  const orgId = user.orgId;
+  return { subscriptionPlan, userId: user.id, orgId };
 };
 
 const onUploadComplete = async ({
@@ -49,6 +49,7 @@ const onUploadComplete = async ({
       userId: metadata.userId,
       url: `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
       uploadStatus: "PROCESSING",
+      orgId: metadata.orgId,
     },
   });
 
