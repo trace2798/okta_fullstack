@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import Input from "./input";
 import AuthSocialButton from "./auth-social-button";
-import { BsGoogle } from "react-icons/bs";
+import { Bs0Square, BsGoogle } from "react-icons/bs";
 
 type Variant = "LOGIN" | "REGISTER";
 
@@ -173,13 +173,9 @@ const AuthForm = () => {
           </div>
 
           <div className="mt-6 flex gap-2">
-            {/* <AuthSocialButton 
-              icon={BsGithub} 
-              onClick={() => socialAction('github')} 
-            />*/}
             <AuthSocialButton
-              icon={BsGoogle}
-              onClick={() => socialAction("google")}
+              icon={Bs0Square}
+              onClick={() => socialAction("okta")}
             />
           </div>
         </div>
