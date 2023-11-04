@@ -7,14 +7,19 @@ import { cn } from "@/lib/utils";
 import { Poppins } from "next/font/google";
 import { MobileSidebar } from "./mobile-sidebar";
 import getCurrentUser from "@/actions/getCurrentuser";
+import { redirect } from "next/navigation";
+
 const font = Poppins({ weight: "600", subsets: ["latin"] });
 
 const Navbar = async () => {
   const user = await getCurrentUser();
+  if (!user) {
+    redirect("/");
+  }
   return (
     <div className="fixed w-full z-50 flex justify-between items-center py-2 px-4 h-16 border-b border-primary/10 dark:bg-zinc-900">
       <div className="flex items-center">
-        <MobileSidebar />
+        <MobileSidebar userType={user?.userType} />
         <Link href="/">
           <h1
             className={cn(

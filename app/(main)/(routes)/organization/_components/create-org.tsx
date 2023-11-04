@@ -46,7 +46,8 @@ import { redirect, useParams, useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { Org } from "@prisma/client";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import {  useSession } from "next-auth/react";
+
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -63,11 +64,11 @@ const formSchema = z.object({
 interface CreateOrgFormProps {}
 
 export const CreateOrg: React.FC<CreateOrgFormProps> = ({}) => {
-  const user = useUser();
-  if (!user) {
+  const session = useSession();
+  if (!session) {
     redirect("/");
   }
-  console.log(user);
+  console.log(session);
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -81,7 +82,7 @@ export const CreateOrg: React.FC<CreateOrgFormProps> = ({}) => {
       authorization_endpoint: "",
       token_endpoint: "",
       userinfo_endpoint: "",
-      client_id: user.user?.sub || "",
+      client_id: session.data?.user?.name || "",
       client_secret: "",
       apikey: "",
     },

@@ -1,14 +1,15 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { db } from "@/lib/db";
-import { getUserInfo } from "@/lib/get-user-info";
+
 import { redirect } from "next/navigation";
 import { FC } from "react";
 import { CreateOrg } from "./_components/create-org";
+import getCurrentUser from "@/actions/getCurrentuser";
 
 interface pageProps {}
 
 const page: FC<pageProps> = async ({}) => {
-  const user = await getUserInfo();
+  const user = await getCurrentUser();
   if (!user || user.userType != "CORETEAM") {
     redirect("/dashboard");
   }

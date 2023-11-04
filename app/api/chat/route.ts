@@ -59,21 +59,21 @@ export async function POST(req: Request) {
         .join(" ");
       console.log(concatenatedPageContent, "concatenatedPageContent");
 
-      const prevMessages = await db.message.findMany({
-        where: {
-          fileId: body.fileId,
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-        take: 6,
-      });
+      // const prevMessages = await db.message.findMany({
+      //   where: {
+      //     fileId: body.fileId,
+      //   },
+      //   orderBy: {
+      //     createdAt: "desc",
+      //   },
+      //   take: 6,
+      // });
 
-      const formattedPrevMessages = prevMessages.map((msg) => ({
-        role: msg.isUserMessage ? ("user" as const) : ("assistant" as const),
-        content: msg.text,
-      }));
-      console.log(formattedPrevMessages);
+      // const formattedPrevMessages = prevMessages.map((msg) => ({
+      //   role: msg.isUserMessage ? ("user" as const) : ("assistant" as const),
+      //   content: msg.text,
+      // }));
+      // console.log(formattedPrevMessages);
       const result = await anyscale.chat.completions.create({
         model: "meta-llama/Llama-2-70b-chat-hf",
         temperature: 0.5,
@@ -89,10 +89,7 @@ export async function POST(req: Request) {
             content: `Use the following pieces of context: ${concatenatedPageContent} to answer the users question: ${question}. \nIf you don't know the answer, just say that you don't know, don't try to make up an answer.
             \n----------------\n
             PREVIOUS CONVERSATION:
-            ${formattedPrevMessages.map((message) => {
-              if (message.role === "user") return `User: ${message.content}\n`;
-              return `Assistant: ${message.content}\n`;
-            })}
+           
             \n----------------\n
             Helpful Answer:`,
           },

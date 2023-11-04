@@ -1,19 +1,17 @@
+import getCurrentUser from "@/actions/getCurrentuser";
 import { db } from "@/lib/db";
-import { getSession } from "@auth0/nextjs-auth0";
-import { getUserInfo } from "./get-user-info";
 
 const DAY_IN_MS = 86_400_000;
 
 export const checkSubscription = async () => {
-  const session = await getSession();
-  const user = await getUserInfo();
+  const user = await getCurrentUser();
   if (!user) {
     return false;
   }
 
   const userSubscription = await db.user.findUnique({
     where: {
-      authId: session?.user.sub,
+      id: user.id,
       userType: "PRO",
     },
     select: {
@@ -37,7 +35,7 @@ export const checkSubscription = async () => {
     // The subscription is expired, so change the user's type to Free
     await db.user.update({
       where: {
-        authId: session?.user.sub,
+        id: user.id,
       },
       data: {
         userType: "FREE",

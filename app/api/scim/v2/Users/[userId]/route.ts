@@ -108,7 +108,7 @@ export async function GET(
         },
       ],
       displayName: user.name,
-      externalId: user.authId,
+      externalId: user.authId!,
       active: user.active || false,
     };
 
@@ -222,7 +222,7 @@ export async function PUT(
         },
       ],
       displayName: updatedUser.name,
-      externalId: updatedUser.authId,
+      externalId: updatedUser.authId!,
       active: updatedUser.active ?? false,
     };
 
