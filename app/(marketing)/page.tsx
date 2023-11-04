@@ -41,7 +41,7 @@ export default function Home() {
           ) : (
             <a href="/dashboard">
               <Button variant={"default"} className="mt-4">
-                Dashboard {user.data?.user?.email}
+                Dashboard
               </Button>
             </a>
           )}

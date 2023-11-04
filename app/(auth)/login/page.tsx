@@ -6,7 +6,9 @@ interface pageProps {}
 const page: FC<pageProps> = ({}) => {
   return (
     <>
-      <AuthForm />
+      <div className="h-screen flex justify-center items-center">
+        <AuthForm />
+      </div>
     </>
   );
 };

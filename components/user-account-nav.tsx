@@ -1,3 +1,4 @@
+'use client'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +12,7 @@ import Image from "next/image";
 import { Icons } from "./icons";
 import Link from "next/link";
 import { Gem } from "lucide-react";
+import { signOut } from "next-auth/react";
 
 interface UserAccountNavProps {
   email: string | undefined;
@@ -23,6 +25,9 @@ const UserAccountNav = async ({
   imageUrl,
   name,
 }: UserAccountNavProps) => {
+  const handleSignout = () => {
+    signOut();
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="overflow-visible">
@@ -76,8 +81,8 @@ const UserAccountNav = async ({
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem className="cursor-pointer">
-          <a href="/api/auth/logout">Log out</a>
+        <DropdownMenuItem className="cursor-pointer" onClick={handleSignout}>
+          Log out
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

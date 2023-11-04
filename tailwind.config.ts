@@ -2,11 +2,11 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   theme: {
     container: {
       center: true,
@@ -65,12 +65,35 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
+        text: {
+          "0%, 100%": {
+            "background-size": "200% 200%",
+            "background-position": "left center",
+          },
+          "50%": {
+            "background-size": "200% 200%",
+            "background-position": "right center",
+          },
+        },
       },
+
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        text: "text 2s ease infinite",
+        heading: "text 10s ease infinite",
+      },
+      fontFamily: {
+        satoshiMedium: "Satoshi-Medium",
+        satoshiBold: "Satoshi-Bold",
+        satoshiBlack: "Satoshi-Black",
+        ranadeLight: "Ranade-Light",
+        ranadeLightItalic: "Ranade-LightItalic",
+        ranadeRegular: "Ranade-Regular",
+        ranadeItalic: "Ranade-Italic",
+        ranadeMedium: "Ranade-Medium",
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};

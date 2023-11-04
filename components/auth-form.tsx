@@ -11,6 +11,8 @@ import { Button } from "./ui/button";
 import Input from "./input";
 import AuthSocialButton from "./auth-social-button";
 import { Bs0Square, BsGoogle } from "react-icons/bs";
+import { Card, CardContent, CardHeader } from "./ui/card";
+import { Label } from "./ui/label";
 
 type Variant = "LOGIN" | "REGISTER";
 
@@ -106,16 +108,16 @@ const AuthForm = () => {
   };
 
   return (
-    <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-      <div
-        className="
-        bg-white
-          px-4
+    <Card className="w-[400px]">
+      <CardHeader className="text-2xl text-center font-satoshiBold">
+        {variant === "REGISTER" ? "Register" : "Login"}
+      </CardHeader>
+      <CardContent
+        className="   px-4
           py-8
           shadow
           sm:rounded-lg
-          sm:px-10
-        "
+          sm:px-10"
       >
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           {variant === "REGISTER" && (
@@ -154,28 +156,15 @@ const AuthForm = () => {
         </form>
 
         <div className="mt-6">
-          <div className="relative">
-            <div
-              className="
-                absolute 
-                inset-0 
-                flex 
-                items-center
-              "
-            >
-              <div className="w-full border-t border-gray-300" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-2 text-gray-500">
-                Or continue with
-              </span>
-            </div>
+          <div className="w-full text-center">
+            <Label>Or continue with</Label>
           </div>
 
           <div className="mt-6 flex gap-2">
             <AuthSocialButton
               icon={Bs0Square}
               onClick={() => socialAction("okta")}
+              label="Continue with Okta"
             />
           </div>
         </div>
@@ -192,15 +181,15 @@ const AuthForm = () => {
         >
           <div>
             {variant === "LOGIN"
-              ? "New to Messenger?"
+              ? "New to converse.ai?"
               : "Already have an account?"}
           </div>
           <div onClick={toggleVariant} className="underline cursor-pointer">
             {variant === "LOGIN" ? "Create an account" : "Login"}
           </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
