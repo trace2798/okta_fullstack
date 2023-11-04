@@ -1,11 +1,12 @@
 import { buttonVariants } from "@/components/ui/button";
 import { db } from "@/lib/db";
-import { getUserInfo } from "@/lib/get-user-info";
-import { getSession } from "@auth0/nextjs-auth0";
+// import { getUserInfo } from "@/lib/get-user-info";
+// import { getSession } from "@auth0/nextjs-auth0";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Chat } from "./_components/chat";
+import getCurrentUser from "@/actions/getCurrentuser";
 
 interface FileIdPageProps {
   params: {
@@ -14,14 +15,14 @@ interface FileIdPageProps {
 }
 
 const FileIdPage = async ({ params }: FileIdPageProps) => {
-  const session = await getSession();
-  const user = await getUserInfo();
-  if (!session) {
+  // const session = await getSession();
+  const user = await getCurrentUser();
+  if (!user) {
     redirect("/");
   }
-  if (session.user.sub !== user.authId) {
-    redirect("/");
-  }
+  // if (session.user.sub !== user.authId) {
+  //   redirect("/");
+  // }
   const file = await db.file.findFirst({
     where: {
       id: params.fileId,
