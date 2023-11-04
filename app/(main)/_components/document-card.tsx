@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import { TrashBox } from "@/components/trash-box";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -12,8 +11,8 @@ import {
 import { Label } from "@/components/ui/label";
 import { File } from "@prisma/client";
 import axios from "axios";
-import IndexButton from "./index-button";
 import Link from "next/link";
+import IndexButton from "./index-button";
 
 interface DocumentCardProps {
   file: File;
@@ -27,7 +26,6 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({ file }) => {
     <Card className="w-[350px] h-fit">
       <CardHeader>
         <CardTitle>{file.name}</CardTitle>
-        {/* <CardDescription>{file.name}</CardDescription> */}
       </CardHeader>
       <CardContent>
         <div className="grid w-full items-center gap-4">
@@ -43,18 +41,16 @@ export const DocumentCard: React.FC<DocumentCardProps> = ({ file }) => {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        {file.indexStatus ? (
+        {file.uploadStatus === "SUCCESS" && (
           <>
-            <Link href={`dashboard/${file.id}`}>Chat</Link>
-            <TrashBox file={file} />
-            {/* <DeleteIndex /> */}
-          </>
-        ) : (
-          <>
-            <IndexButton file={file} />
-            <TrashBox file={file} />
+            {file.indexStatus ? (
+              <Link href={`dashboard/${file.id}`}>Chat</Link>
+            ) : (
+              <IndexButton file={file} />
+            )}
           </>
         )}
+        <TrashBox file={file} />
       </CardFooter>
     </Card>
   );

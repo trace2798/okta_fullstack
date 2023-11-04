@@ -19,6 +19,7 @@ const page: FC<pageProps> = async ({}) => {
       <div className="min-h-screen">
         Settings Page <br />
         {session.user?.name}
+        {user?.userType}
         {/* {user.userType === "CORETEAM" && <CreateOrg />} */}
       </div>
     </>

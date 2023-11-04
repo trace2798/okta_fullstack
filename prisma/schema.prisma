@@ -41,8 +41,8 @@ model User {
   userType               UserType  @default(FREE)
   active                 Boolean?  @default(true)
   accounts               Account[]
-
-  sessions Session[]
+  count                  Int       @default(0)
+  sessions               Session[]
 
   @@index([orgId])
 }
@@ -82,6 +82,7 @@ enum UploadStatus {
   PROCESSING
   FAILED
   SUCCESS
+  LIMITEXCEED
 }
 
 enum IndexStatus {

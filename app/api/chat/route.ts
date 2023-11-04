@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     const index = pinecone.index("converseaiokta");
     const anyscale = new OpenAI({
       apiKey: process.env.ANYSCALE_API_KEY!,
-      baseURL: process.env.OPENAI_API_BASE!,
+      baseURL: process.env.ANYSCALE_API_BASE!,
     });
     const queryEmbedding = await new OpenAIEmbeddings().embedQuery(question);
     // 4. Query Pinecone index and return top 10 matches

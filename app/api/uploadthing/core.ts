@@ -6,9 +6,11 @@ import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { getPineconeClient } from "@/lib/pinecone";
 import getCurrentUser from "@/actions/getCurrentuser";
+import { getUserSubscriptionPlan } from "@/lib/getPlan";
 
 // import { getUserSubscriptionPlan } from "@/lib/stripe";
 // import { PLANS } from "@/src/config/stripe";
+type SubscriptionPlan = "FREE" | "PRO" | "ENTERPRISE";
 
 const f = createUploadthing();
 
@@ -17,8 +19,8 @@ const middleware = async () => {
 
   if (!user) throw new Error("Unauthorized");
 
-  //   const subscriptionPlan = await getUserSubscriptionPlan();
-  const subscriptionPlan = true;
+  const subscriptionPlan = await getUserSubscriptionPlan({ userId: user.id });
+
   const orgId = user.orgId;
   return { subscriptionPlan, userId: user.id, orgId };
 };
@@ -67,37 +69,42 @@ const onUploadComplete = async ({
     const pagesAmt = pageLevelDocs.length;
 
     const { subscriptionPlan } = metadata;
-    // const { isSubscribed } = subscriptionPlan;
-    const isSubscribed = true;
-    // const isProExceeded =
-    //   pagesAmt > PLANS.find((plan) => plan.name === "Pro")!.pagesPerPdf;
-    // const isFreeExceeded =
-    //   pagesAmt > PLANS.find((plan) => plan.name === "Free")!.pagesPerPdf;
-    const isProExceeded = false;
-    const isFreeExceeded = false;
-    if ((isSubscribed && isProExceeded) || (!isSubscribed && isFreeExceeded)) {
+
+    // Define the maximum pages for each subscription plan
+    const maxPages: Record<SubscriptionPlan, number> = {
+      FREE: 1,
+      PRO: 2,
+      ENTERPRISE: 5,
+    };
+
+    // Check if the pages amount exceeds the limit for the subscription plan
+    const isPageLimitExceeded =
+      pagesAmt > maxPages[subscriptionPlan as SubscriptionPlan];
+
+    if (isPageLimitExceeded) {
       await db.file.update({
         data: {
-          uploadStatus: "FAILED",
+          uploadStatus: "LIMITEXCEED",
+          pageAmt: pagesAmt,
+        },
+        where: {
+          id: createdFile.id,
+        },
+      });
+    } else {
+      // vectorize and index entire document
+
+      await db.file.update({
+        data: {
+          uploadStatus: "SUCCESS",
+          pageAmt: pagesAmt,
+          indexStatus: false,
         },
         where: {
           id: createdFile.id,
         },
       });
     }
-
-    // vectorize and index entire document
-
-    await db.file.update({
-      data: {
-        uploadStatus: "SUCCESS",
-        pageAmt: pagesAmt,
-        indexStatus: false,
-      },
-      where: {
-        id: createdFile.id,
-      },
-    });
   } catch (err) {
     await db.file.update({
       data: {
