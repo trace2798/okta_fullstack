@@ -20,7 +20,7 @@ const page: FC<pageProps> = async ({}) => {
     <>
       <div className="min-h-screen flex flex-wrap justify-evenly space-y-3 space-x-3">
         {documents.map((doc, index) => (
-          <DocumentCard file={doc} />
+          <DocumentCard key={index} file={doc} />
         ))}
       </div>
     </>

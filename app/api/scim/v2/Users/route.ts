@@ -254,7 +254,7 @@ export async function POST(request: Request) {
         },
       ],
       displayName: newUser.name,
-      externalId: newUser.authId,
+      externalId: newUser.authId!,
       active: newUser.active || false,
     };
 

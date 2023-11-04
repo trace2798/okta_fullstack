@@ -18,6 +18,28 @@ const getCurrentUser = async () => {
     if (!currentUser) {
       return null;
     }
+    console.log(currentUser);
+    if (currentUser.hashedPassword) {
+      return currentUser;
+    }
+    if (!currentUser.hashedPassword) {
+      const userAccount = await db.account.findFirst({
+        where: {
+          userId: currentUser.id,
+        },
+      });
+      console.log(userAccount);
+      if (!currentUser.authId) {
+        const updateUser = await db.user.update({
+          where: {
+            id: userAccount?.userId,
+          },
+          data: {
+            authId: userAccount?.providerAccountId,
+          },
+        });
+      }
+    }
 
     return currentUser;
   } catch (error: any) {
