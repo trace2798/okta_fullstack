@@ -59,43 +59,65 @@ export async function POST(req: Request) {
         .join(" ");
       console.log(concatenatedPageContent, "concatenatedPageContent");
 
-      // const prevMessages = await db.message.findMany({
-      //   where: {
-      //     fileId: body.fileId,
-      //   },
-      //   orderBy: {
-      //     createdAt: "desc",
-      //   },
-      //   take: 6,
-      // });
-
-      // const formattedPrevMessages = prevMessages.map((msg) => ({
-      //   role: msg.isUserMessage ? ("user" as const) : ("assistant" as const),
-      //   content: msg.text,
-      // }));
-      // console.log(formattedPrevMessages);
-      const result = await anyscale.chat.completions.create({
-        model: "meta-llama/Llama-2-70b-chat-hf",
-        temperature: 0.5,
-        stream: true,
-        messages: [
-          {
-            role: "system",
-            content:
-              "You are a helpful assistant who uses the following pieces of context to answer the users question.",
-          },
-          {
-            role: "user",
-            content: `Use the following pieces of context: ${concatenatedPageContent} to answer the users question: ${question}. \nIf you don't know the answer, just say that you don't know, don't try to make up an answer.
-            \n----------------\n
-            PREVIOUS CONVERSATION:
-           
-            \n----------------\n
-            Helpful Answer:`,
-          },
-        ],
+      const prevMessages = await db.message.findMany({
+        where: {
+          fileId: body.fileId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 6,
       });
+
+      const formattedPrevMessages = prevMessages.map((msg) => ({
+        role: msg.isUserMessage ? ("user" as const) : ("assistant" as const),
+        content: msg.text,
+      }));
+      console.log(formattedPrevMessages);
+      let result;
+      if (prevMessages.length < 6) {
+        result = await anyscale.chat.completions.create({
+          model: "meta-llama/Llama-2-70b-chat-hf",
+          temperature: 0.5,
+          stream: true,
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are a helpful assistant who uses the following pieces of context to answer the users question.",
+            },
+            {
+              role: "user",
+              content: `Use the following pieces of context: ${concatenatedPageContent} to answer the users question: ${question}. \nIf you don't know the answer, just say that you don't know, don't try to make up an answer.
+      Helpful Answer:`,
+            },
+          ],
+        });
+      } else {
+        result = await anyscale.chat.completions.create({
+          model: "meta-llama/Llama-2-70b-chat-hf",
+          temperature: 0.5,
+          stream: true,
+          messages: [
+            {
+              role: "system",
+              content:
+                "You are a helpful assistant who uses the following pieces of context to answer the users question.",
+            },
+            {
+              role: "user",
+              content: `Use the following pieces of context: ${concatenatedPageContent} to answer the users question: ${question}. \nIf you don't know the answer, just say that you don't know, don't try to make up an answer.
+      \n----------------\n
+      PREVIOUS CONVERSATION:
+     ${formattedPrevMessages}
+      \n----------------\n
+      Helpful Answer:`,
+            },
+          ],
+        });
+      }
       console.log(result, "RESULT");
+
       // const stream = OpenAIStream(result);
       // console.log(stream);
       const stream = OpenAIStream(result, {
