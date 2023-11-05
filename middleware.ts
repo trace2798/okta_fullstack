@@ -6,10 +6,6 @@ export default withAuth({
   },
 });
 
-export const config = { 
-  matcher: [
-    "/dashboard",
-    "/conversations/:path*",
-    "/users/:path*",
-  ]
+export const config = {
+  matcher: ["/dashboard/:path*", "/auth-callback", "/organization/:path*", "/settings/:path*" ],
 };
