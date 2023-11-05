@@ -18,7 +18,7 @@ export default function Home() {
             converse.ai
           </h1>
           <h2 className="text-2xl md:text-3xl font-satoshiBold mt-10">
-            Take to your documents
+            Talk to your documents
           </h2>
           <h3 className="text-xl mt-5 font-ranadeRegular">
             This is my submission for{" "}
