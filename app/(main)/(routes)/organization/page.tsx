@@ -14,7 +14,7 @@ const page: FC<pageProps> = async ({}) => {
     redirect("/dashboard");
   }
   const orgs = await db.org.findMany({});
-  console.log(orgs);
+  // console.log(orgs);
   return (
     <>
       <div className="min-h-screen">

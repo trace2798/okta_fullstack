@@ -15,19 +15,19 @@ const IndexButton: FC<IndexButtonProps> = ({ file }) => {
   const router = useRouter();
   const onSubmit = async () => {
     try {
-    //   const url = file.url;
-      const response = await axios.post(`/api/index`, { file});
-      console.log(response);
+      //   const url = file.url;
+      const response = await axios.post(`/api/index`, { file });
+      // console.log(response);
       router.refresh();
       toast({
-        title: "Image Generated",
-        description: "Image based on your input has been generated",
+        title: "Successfully Index",
+        description: "File successfully indexed",
       });
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 403) {
           return toast({
-            title: "You are out of token.",
+            title: "You are out of token Open AI credits.",
             variant: "destructive",
           });
         }

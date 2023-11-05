@@ -68,7 +68,7 @@ export const CreateOrg: React.FC<CreateOrgFormProps> = ({}) => {
   if (!session) {
     redirect("/");
   }
-  console.log(session);
+  // console.log(session);
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -94,8 +94,8 @@ export const CreateOrg: React.FC<CreateOrgFormProps> = ({}) => {
     try {
       setLoading(true);
       const response = await axios.post(`/api/org`, values);
-      console.log(values, "VALUES VALUES");
-      console.log(response);
+      // console.log(values, "VALUES VALUES");
+      // console.log(response);
       form.reset();
       toast({
         title: "Organizarion Data Added",

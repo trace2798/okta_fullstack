@@ -8,23 +8,23 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const data = await req.json();
-    console.log(data, "DATA");
+    // console.log(data, "DATA");
     const response = await fetch(`${data.file.url}`);
-    console.log(response);
+    // console.log(response);
     const blob = await response.blob();
-    console.log(blob, "BLOG");
+    // console.log(blob, "BLOG");
     const loader = new PDFLoader(blob);
-    console.log(loader, "LOADER");
+    // console.log(loader, "LOADER");
     const pageLevelDocs = await loader.load();
-    console.log(pageLevelDocs);
+    // console.log(pageLevelDocs);
     const pagesAmt = pageLevelDocs.length;
-    console.log(pagesAmt);
+    // console.log(pagesAmt);
     const pinecone = await getPineconeClient();
-    console.log(pinecone, "PINECONE");
+    // console.log(pinecone, "PINECONE");
     const pineconeIndex = pinecone.Index("converseaiokta");
     try {
       for (const doc of pageLevelDocs) {
-        console.log(doc);
+        // console.log(doc);
         const txtPath = doc.metadata.loc.pageNumber;
         const text = doc.pageContent;
 
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
         });
         //Split text into chunks (documents)
         const chunks = await textSplitter.createDocuments([text]);
-        console.log(`Total chunks: ${chunks.length}`);
+        // console.log(`Total chunks: ${chunks.length}`);
         const embeddingsArrays = await new OpenAIEmbeddings().embedDocuments(
           chunks.map((chunk) => chunk.pageContent.replace(/\n/g, " "))
         );
@@ -72,13 +72,13 @@ export async function POST(req: Request) {
           if (batch.length === batchSize || idx === chunks.length - 1) {
             //change this to your COMMAND_TO_UPSERT_TO_PINECONE
             await pineconeIndex.upsert(batch);
-            console.log("Upserting Vector");
+            // console.log("Upserting Vector");
             // Empty the batch
             batch = [];
           }
         }
         // Log the number of vectors updated just for verification purpose
-        console.log(`Pinecone index updated with ${chunks.length} vectors`);
+        // console.log(`Pinecone index updated with ${chunks.length} vectors`);
         await db.file.update({
           data: {
             indexStatus: true,
@@ -90,7 +90,7 @@ export async function POST(req: Request) {
         });
       }
     } catch (err) {
-      console.log("error: Error in upserting in pinecone ", err);
+      // console.log("error: Error in upserting in pinecone ", err);
       return new NextResponse("Error in upserting in pinecone", {
         status: 400,
       });

@@ -49,7 +49,7 @@ export const Chat: FC<ChatProps> = ({ fileId, pastMessages, userId }) => {
         });
       }
       // router.refresh();
-      // console.log(response.body?.getReader());
+      // // console.log(response.body?.getReader());
     },
     // onFinish: router.refresh,
   });

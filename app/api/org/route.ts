@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   try {
     const user = await getCurrentUser();
     const body = await req.json();
-    console.log(body);
+    // console.log(body);
     if (!user) {
       return new NextResponse("Unauthenticated", { status: 403 });
     }
@@ -48,10 +48,10 @@ export async function POST(req: Request) {
         apikey: hashedApiKey,
       },
     });
-    console.log(org, "ORG");
+    // console.log(org, "ORG");
     return NextResponse.json("OK");
   } catch (error) {
-    // console.log("[STORES_POST]", error);
+    // // console.log("[STORES_POST]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }

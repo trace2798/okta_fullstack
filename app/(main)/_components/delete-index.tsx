@@ -7,7 +7,7 @@ interface DeleteIndexProps {}
 
 const handleClick = async () => {
   const response = await axios.post("/api/deleteindex");
-  console.log(response);
+  // console.log(response);
 };
 
 const DeleteIndex: FC<DeleteIndexProps> = ({}) => {

@@ -5,8 +5,8 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    console.log(body);
-    console.log("INDEX IDS NOW");
+    // console.log(body);
+    // console.log("INDEX IDS NOW");
     const indexId = await db.index.findMany({
       where: {
         fileId: body.data.file.id,
@@ -15,14 +15,14 @@ export async function POST(req: Request) {
         name: true,
       },
     });
-    console.log(indexId, "INDEX ID");
+    // console.log(indexId, "INDEX ID");
     const indexNames = indexId.map((record) => record.name);
-    console.log(indexNames, "INDEX ID");
+    // console.log(indexNames, "INDEX ID");
     const pinecone = new Pinecone({
       apiKey: process.env.PINECONE_API_KEY!,
       environment: process.env.PINECONE_ENVIRONMENT!,
     });
-    console.log(pinecone);
+    // console.log(pinecone);
     const index = pinecone.index("converseaiokta");
     // await index.deleteMany(indexNames);
     if (indexNames.length === 0) {
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     }
     return new NextResponse("Successfully Deleted", { status: 200 });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

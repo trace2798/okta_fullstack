@@ -31,8 +31,8 @@
 //       return user;
 //     }
 //   }
-//   console.log(session, "SESSION SESSION");
-//   console.log(id, "IDID");
+//   // console.log(session, "SESSION SESSION");
+//   // console.log(id, "IDID");
 //   const newUser = await db.user.create({
 //     data: {
 //       authId: session.user.sub,

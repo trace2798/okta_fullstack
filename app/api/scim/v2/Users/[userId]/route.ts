@@ -40,14 +40,14 @@ export async function GET(
 ) {
   try {
     const headersList = headers();
-    console.log(headersList);
+    // console.log(headersList);
     const api = headersList.get("authorization");
-    console.log(api);
+    // console.log(api);
     if (!api) {
       return new NextResponse("API KEY is required");
     }
     const apiKey = api.split(" ")[1];
-    console.log(apiKey);
+    // console.log(apiKey);
     const org = await db.org.findFirst({
       where: {
         apikey: apiKey,
@@ -56,7 +56,7 @@ export async function GET(
         id: true,
       },
     });
-    console.log(org);
+    // console.log(org);
     if (!org) {
       return new NextResponse("Organization not found", {
         status: 404,
@@ -65,10 +65,10 @@ export async function GET(
 
     const orgId = org.id;
     // const orgId = body.orgId;
-    console.log(params);
+    // console.log(params);
     const id = params.userId.toString();
-    console.log(id);
-    console.log(orgId);
+    // console.log(id);
+    // console.log(orgId);
     if (!orgId) {
       return new NextResponse("Org It is required");
     }
@@ -85,7 +85,7 @@ export async function GET(
         orgId: orgId,
       },
     });
-    console.log(user);
+    // console.log(user);
     if (!user) {
       return new NextResponse("User with that id could not be found", {
         status: 404,
@@ -125,19 +125,19 @@ export async function PUT(
   { params }: { params: { userId: string } }
 ) {
   try {
-    console.log(request.body);
+    // console.log(request.body);
     const body = await request.json();
-    console.log(body, "BODY BODY BODY");
-    console.log("Active from body:", body.active);
+    // console.log(body, "BODY BODY BODY");
+    // console.log("Active from body:", body.active);
     const headersList = headers();
-    console.log(headersList);
+    // console.log(headersList);
     const api = headersList.get("authorization");
-    console.log(api);
+    // console.log(api);
     if (!api) {
       return new NextResponse("API KEY is required");
     }
     const apiKey = api.split(" ")[1];
-    console.log(apiKey);
+    // console.log(apiKey);
     const org = await db.org.findFirst({
       where: {
         apikey: apiKey,
@@ -146,17 +146,17 @@ export async function PUT(
         id: true,
       },
     });
-    console.log(org);
+    // console.log(org);
     if (!org) {
       return new NextResponse("Organization not found", {
         status: 404,
       });
     }
     const orgId = org.id;
-    console.log(params);
+    // console.log(params);
     const id = params.userId.toString();
-    console.log(id);
-    console.log(orgId);
+    // console.log(id);
+    // console.log(orgId);
     if (!orgId) {
       return new NextResponse("Org It is required");
     }
@@ -167,7 +167,7 @@ export async function PUT(
         orgId: orgId,
       },
     });
-    console.log(user);
+    // console.log(user);
     // If user not found, return error
     if (!user) {
       return new NextResponse("User with that id could not be found", {
@@ -175,10 +175,10 @@ export async function PUT(
       });
     }
     const updatedUserRequest: IUserSchema = body;
-    console.log(updatedUserRequest.active);
-    console.log(updatedUserRequest);
+    // console.log(updatedUserRequest.active);
+    // console.log(updatedUserRequest);
     const { name, emails, active } = updatedUserRequest;
-    console.log(name);
+    // console.log(name);
     // Find the primary email
     const primaryEmail = emails?.find((email) => email.primary);
 
@@ -201,7 +201,7 @@ export async function PUT(
         authId: true,
       },
     });
-    console.log("Updated User info:", updatedUser);
+    // console.log("Updated User info:", updatedUser);
 
     const [givenName, familyName] = updatedUser.name.split(" ");
 
@@ -227,7 +227,7 @@ export async function PUT(
     };
 
     // Return SCIM user object in response
-    console.log("USER UPDATED");
+    // console.log("USER UPDATED");
     return new NextResponse(JSON.stringify(scimUser));
   } catch (error) {
     return new NextResponse("Internal Error");
@@ -240,20 +240,20 @@ export async function PATCH(
   { params }: { params: { userId: string } }
 ) {
   try {
-    console.log(request.body);
+    // console.log(request.body);
     const body = await request.json();
-    console.log(body);
+    // console.log(body);
     const activeStatus = body.Operations[0].value.active;
-    console.log(activeStatus);
+    // console.log(activeStatus);
     const headersList = headers();
-    console.log(headersList);
+    // console.log(headersList);
     const api = headersList.get("authorization");
-    console.log(api);
+    // console.log(api);
     if (!api) {
       return new NextResponse("API KEY is required");
     }
     const apiKey = api.split(" ")[1];
-    console.log(apiKey);
+    // console.log(apiKey);
     const org = await db.org.findFirst({
       where: {
         apikey: apiKey,
@@ -262,7 +262,7 @@ export async function PATCH(
         id: true,
       },
     });
-    console.log(org);
+    // console.log(org);
     if (!org) {
       return new NextResponse("Organization not found", {
         status: 404,
@@ -270,10 +270,10 @@ export async function PATCH(
     }
 
     const orgId = org.id;
-    console.log(params);
+    // console.log(params);
     const id = params.userId.toString();
-    console.log(id);
-    console.log(orgId);
+    // console.log(id);
+    // console.log(orgId);
     if (!orgId) {
       return new NextResponse("Org It is required");
     }
@@ -285,7 +285,7 @@ export async function PATCH(
         orgId: orgId,
       },
     });
-    console.log(user);
+    // console.log(user);
 
     // If user not found, return error
     if (!user) {
@@ -309,7 +309,7 @@ export async function PATCH(
       },
     });
 
-    console.log(updatedUser);
+    // console.log(updatedUser);
     const [givenName, familyName] = updatedUser.name.split(" ");
     // Prepare the SCIM user object to be returned in the response
     const scimUser: IUserSchema = {
@@ -322,7 +322,7 @@ export async function PATCH(
       },
       active: updatedUser.active || false,
     };
-    console.log("SOFT DELETED USER");
+    // console.log("SOFT DELETED USER");
     // Return SCIM user object in response
     return new NextResponse(JSON.stringify(scimUser));
   } catch (error) {
@@ -336,16 +336,16 @@ export async function DELETE(
   { params }: { params: { userId: string } }
 ) {
   try {
-    console.log(request.body);
+    // console.log(request.body);
     const headersList = headers();
-    console.log(headersList);
+    // console.log(headersList);
     const api = headersList.get("authorization");
-    console.log(api);
+    // console.log(api);
     if (!api) {
       return new NextResponse("API KEY is required");
     }
     const apiKey = api.split(" ")[1];
-    console.log(apiKey);
+    // console.log(apiKey);
     const org = await db.org.findFirst({
       where: {
         apikey: apiKey,
@@ -354,7 +354,7 @@ export async function DELETE(
         id: true,
       },
     });
-    console.log(org);
+    // console.log(org);
     if (!org) {
       return new NextResponse("Organization not found", {
         status: 404,
@@ -362,10 +362,10 @@ export async function DELETE(
     }
 
     const orgId = org.id;
-    console.log(params);
+    // console.log(params);
     const id = params.userId.toString();
-    console.log(id);
-    console.log(orgId);
+    // console.log(id);
+    // console.log(orgId);
     if (!orgId) {
       return new NextResponse("Org It is required");
     }
@@ -376,7 +376,7 @@ export async function DELETE(
         orgId: orgId,
       },
     });
-    console.log(user);
+    // console.log(user);
 
     // If user not found, return error
     if (!user) {

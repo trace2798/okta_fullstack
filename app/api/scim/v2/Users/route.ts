@@ -36,14 +36,14 @@ const defaultUserSchema: IUserSchema = {
 export async function GET(req: NextRequest) {
   try {
     const headersList = headers();
-    console.log(headersList);
+    // console.log(headersList);
     const api = headersList.get("authorization");
-    console.log(api);
+    // console.log(api);
     if (!api) {
       return new NextResponse("API KEY is required");
     }
     const apiKey = api.split(" ")[1];
-    console.log(apiKey);
+    // console.log(apiKey);
     const org = await db.org.findFirst({
       where: {
         apikey: apiKey,
@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
         id: true,
       },
     });
-    console.log(org);
+    // console.log(org);
     if (!org) {
       return new NextResponse("Organization not found", {
         status: 404,
@@ -60,7 +60,7 @@ export async function GET(req: NextRequest) {
     }
 
     const orgId = org.id;
-    console.log(orgId);
+    // console.log(orgId);
     if (!orgId) {
       return new NextResponse("Org It is required");
     }
@@ -69,24 +69,24 @@ export async function GET(req: NextRequest) {
     const DEFAULT_RECORD_LIMIT = "100";
     // let reqQuery = { ...(req as any).query };
     let reqQuery = req.nextUrl.searchParams;
-    console.log(reqQuery);
-    console.log(reqQuery);
+    // console.log(reqQuery);
+    // console.log(reqQuery);
     let startIndex = parseInt(
       reqQuery.get("startIndex") ?? DEFAULT_START_INDEX
     );
-    console.log(startIndex);
+    // console.log(startIndex);
     startIndex--;
     const recordLimit = parseInt(reqQuery.get("count") ?? DEFAULT_RECORD_LIMIT);
-    // console.log(recordLimit);
+    // // console.log(recordLimit);
     // Add these lines for filtering
     let filterQuery: string | null = (reqQuery.get("filter") as string) ?? null;
-    console.log(filterQuery);
+    // console.log(filterQuery);
     let filterParams: string[] = [];
     let email = null;
-    console.log(filterQuery);
+    // console.log(filterQuery);
     if (!!filterQuery) {
       filterParams = filterQuery.split(" ");
-      console.log(filterParams);
+      // console.log(filterParams);
       const FILTER_EXPRESSION_LENGTH = 3;
       const FILTER_ATTRIBUTE_NAME = 0;
       const FILTER_OPERATOR = 1;
@@ -99,10 +99,10 @@ export async function GET(req: NextRequest) {
       ) {
         filterParams = [];
         filterQuery = null;
-        console.log(filterParams);
+        // console.log(filterParams);
       } else {
         email = filterParams[FILTER_VALUE].replaceAll('"', "");
-        console.log("Filter Detected: userName EQ ", email);
+        // console.log("Filter Detected: userName EQ ", email);
       }
     }
 
@@ -126,11 +126,11 @@ export async function GET(req: NextRequest) {
       where,
     });
 
-    console.log(users);
+    // console.log(users);
 
     // Convert each user to SCIM format
     const scimUsers = users.map((user) => {
-      // console.log("1");
+      // // console.log("1");
       const [givenName, familyName] = user.name.split(" ");
       return {
         ...defaultUserSchema,
@@ -170,20 +170,20 @@ export async function GET(req: NextRequest) {
 // Add a new user
 export async function POST(request: Request) {
   try {
-    console.log(request.body);
+    // console.log(request.body);
     const body = await request.json();
-    console.log(body);
+    // console.log(body);
     const email = body.emails[0].value;
-    console.log(email);
+    // console.log(email);
     const headersList = headers();
-    console.log(headersList);
+    // console.log(headersList);
     const api = headersList.get("authorization");
-    console.log(api);
+    // console.log(api);
     if (!api) {
       return new NextResponse("API KEY is required");
     }
     const apiKey = api.split(" ")[1];
-    console.log(apiKey);
+    // console.log(apiKey);
     const org = await db.org.findFirst({
       where: {
         apikey: apiKey,
@@ -192,7 +192,7 @@ export async function POST(request: Request) {
         id: true,
       },
     });
-    console.log(org);
+    // console.log(org);
     if (!org) {
       return new NextResponse("Organization not found", {
         status: 404,
@@ -201,7 +201,7 @@ export async function POST(request: Request) {
 
     const orgId = org.id;
 
-    console.log(orgId);
+    // console.log(orgId);
     if (!orgId) {
       return new NextResponse("Org It is required");
     }
@@ -213,13 +213,13 @@ export async function POST(request: Request) {
         orgId: orgId,
       },
     });
-    console.log(checkUser);
+    // console.log(checkUser);
     if (checkUser) {
       return new NextResponse(
         "User with that email account already exist in this organization"
       );
     }
-    console.log("HERE");
+    // console.log("HERE");
 
     const newUser = await db.user.create({
       data: {
@@ -232,9 +232,9 @@ export async function POST(request: Request) {
         active: body.active,
       },
     });
-    console.log(newUser);
+    // console.log(newUser);
 
-    console.log("Account Created ID: ", newUser.id);
+    // console.log("Account Created ID: ", newUser.id);
     const [givenName, familyName] = newUser.name.split(" ");
 
     // Prepare the SCIM user object to be returned in the response

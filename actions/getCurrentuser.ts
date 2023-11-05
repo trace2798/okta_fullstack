@@ -18,7 +18,7 @@ const getCurrentUser = async () => {
     if (!currentUser) {
       return null;
     }
-    console.log(currentUser);
+    // console.log(currentUser);
     if (currentUser.hashedPassword) {
       return currentUser;
     }
@@ -28,7 +28,7 @@ const getCurrentUser = async () => {
           userId: currentUser.id,
         },
       });
-      console.log(userAccount);
+      // console.log(userAccount);
       if (!currentUser.authId) {
         const updateUser = await db.user.update({
           where: {

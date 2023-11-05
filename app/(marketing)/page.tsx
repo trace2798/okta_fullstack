@@ -5,7 +5,7 @@ import AnimatedButton from "./_components/animated-button";
 
 export default function Home() {
   const user = useSession();
-  console.log(user);
+  // console.log(user);
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-12 mt-32 md:mt-0 md:p-24">
       <div className="xl:my-12 md:my-20 md:mx-[5vw] lg:mx-[10vw] xl:mx-[15vw] flex flex-col items-center justify-between">

@@ -13,7 +13,7 @@ const page: FC<pageProps> = async ({}) => {
     redirect("/");
   }
   const user = await getCurrentUser();
-  console.log(user);
+  // console.log(user);
   return (
     <>
       <div className="min-h-screen">

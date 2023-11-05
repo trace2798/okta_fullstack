@@ -11,7 +11,7 @@ import OpenAI from "openai";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    console.log(body, "BODY");
+    // console.log(body, "BODY");
     await db.message.create({
       data: {
         text: body.messages[body.messages.length - 1].content,
@@ -21,13 +21,13 @@ export async function POST(req: Request) {
       },
     });
     const question = body.messages[body.messages.length - 1].content;
-    console.log(question);
+    // console.log(question);
     const vectorIDS = await db.index.findMany({
       where: {
         fileId: body.fileId,
       },
     });
-    console.log(vectorIDS, vectorIDS);
+    // console.log(vectorIDS, vectorIDS);
     //Change this to your embed and query command link
     const pinecone = new Pinecone({
       apiKey: process.env.PINECONE_API_KEY!,
@@ -46,9 +46,9 @@ export async function POST(req: Request) {
       includeMetadata: true,
       includeValues: true,
     });
-    console.log(queryResponse);
+    // console.log(queryResponse);
 
-    console.log(`Asking question: ${question}...`);
+    // console.log(`Asking question: ${question}...`);
     if (
       queryResponse &&
       queryResponse.matches &&
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
       const concatenatedPageContent = queryResponse.matches
         .map((match: any) => match.metadata.pageContent)
         .join(" ");
-      console.log(concatenatedPageContent, "concatenatedPageContent");
+      // console.log(concatenatedPageContent, "concatenatedPageContent");
 
       const prevMessages = await db.message.findMany({
         where: {
@@ -73,7 +73,7 @@ export async function POST(req: Request) {
         role: msg.isUserMessage ? ("user" as const) : ("assistant" as const),
         content: msg.text,
       }));
-      console.log(formattedPrevMessages);
+      // console.log(formattedPrevMessages);
       let result;
       if (prevMessages.length < 6) {
         result = await anyscale.chat.completions.create({
@@ -116,10 +116,10 @@ export async function POST(req: Request) {
           ],
         });
       }
-      console.log(result, "RESULT");
+      // console.log(result, "RESULT");
 
       // const stream = OpenAIStream(result);
-      // console.log(stream);
+      // // console.log(stream);
       const stream = OpenAIStream(result, {
         async onCompletion(completion: any) {
           await db.message.create({
@@ -134,11 +134,11 @@ export async function POST(req: Request) {
       });
       return new StreamingTextResponse(stream);
     } else {
-      //console.log("There are no matches.");
+      //// console.log("There are no matches.");
       return new NextResponse("No Matches", { status: 200 });
     }
   } catch (error) {
-    //console.log("[READ_error]", error);
+    //// console.log("[READ_error]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

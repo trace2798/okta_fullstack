@@ -36,6 +36,7 @@ const onUploadComplete = async ({
     url: string;
   };
 }) => {
+  // console.log(metadata);
   const isFileExist = await db.file.findFirst({
     where: {
       key: file.key,
@@ -43,7 +44,7 @@ const onUploadComplete = async ({
   });
 
   if (isFileExist) return;
-  console.log("1");
+  // console.log("1");
   const createdFile = await db.file.create({
     data: {
       key: file.key,
@@ -54,7 +55,7 @@ const onUploadComplete = async ({
       orgId: metadata.orgId,
     },
   });
-  console.log("2: File created");
+  // console.log("2: File created");
   try {
     const response = await fetch(
       `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`
@@ -69,7 +70,7 @@ const onUploadComplete = async ({
     const pagesAmt = pageLevelDocs.length;
 
     const { subscriptionPlan } = metadata;
-    console.log("CHECKING PAGES");
+    // console.log("CHECKING PAGES");
     // Define the maximum pages for each subscription plan
     const maxPages: Record<SubscriptionPlan, number> = {
       FREE: 1,
@@ -92,8 +93,6 @@ const onUploadComplete = async ({
         },
       });
     } else {
-      // vectorize and index entire document
-
       await db.file.update({
         data: {
           uploadStatus: "SUCCESS",
