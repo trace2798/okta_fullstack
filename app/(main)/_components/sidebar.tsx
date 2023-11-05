@@ -3,6 +3,7 @@
 import {
   Bot,
   Building2,
+  DollarSign,
   LayoutDashboard,
   Settings,
   UploadCloud,
@@ -43,6 +44,13 @@ export const Sidebar = ({ userType }: SidebarProps) => {
       label: "Orgs",
     },
   ];
+  // const routeFree = [
+  //   {
+  //     icon: DollarSign,
+  //     href: "/organization",
+  //     label: "Upgrade",
+  //   },
+  // ];
   return (
     <div className="space-y-4 flex flex-col h-full text-primary dark:bg-zinc-900">
       <div className="p-3 flex-1 flex justify-center">
@@ -90,6 +98,24 @@ export const Sidebar = ({ userType }: SidebarProps) => {
               Upload
             </div>
           </div>
+          {/* <div>
+            {userType === "FREE" &&
+              routeFree.map((route) => (
+                <div
+                  onClick={proModal.onOpen}
+                  key={route.href}
+                  className={cn(
+                    "text-muted-foreground text-xs group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-primary hover:bg-primary/10 rounded-lg transition",
+                    pathname === route.href && "bg-primary/10 text-primary"
+                  )}
+                >
+                  <div className="flex flex-col gap-y-2 items-center text-center flex-1">
+                    <route.icon className="h-5 w-5" />
+                    {route.label}
+                  </div>
+                </div>
+              ))}
+          </div> */}
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ModeToggle } from "@/components/mode-toggle";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import UserAccountNav from "@/components/user-account-nav";
 import LoginButton from "../../../components/login-button";
 import { cn } from "@/lib/utils";
@@ -8,11 +8,13 @@ import { Poppins } from "next/font/google";
 import { MobileSidebar } from "./mobile-sidebar";
 import getCurrentUser from "@/actions/getCurrentuser";
 import { redirect } from "next/navigation";
+import Upgrade from "./upgrade-button";
 
 const font = Poppins({ weight: "600", subsets: ["latin"] });
 
 const Navbar = async () => {
   const user = await getCurrentUser();
+
   if (!user) {
     redirect("/");
   }
@@ -43,6 +45,7 @@ const Navbar = async () => {
             imageUrl={user.imageUrl ?? ""}
           />
         )}
+        {user.userType === "FREE" && <Upgrade />}
       </div>
     </div>
   );

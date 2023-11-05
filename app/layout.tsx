@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { ModalProvider } from "@/components/modal-provider";
 import AuthContext from "@/components/auth-context";
+import { ProModal } from "@/components/pro-modal";
 
 // const inter = Inter({ subsets: ["latin"] });
 
