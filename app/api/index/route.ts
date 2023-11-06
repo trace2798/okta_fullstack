@@ -6,14 +6,14 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+  const data = await req.json();
+  // console.log(data, "DATA");
+  const response = await fetch(`${data.file.url}`);
+  // console.log(response);
+  const blob = await response.blob();
+  // console.log(blob, "BLOG");
+  const loader = new PDFLoader(blob);
   try {
-    const data = await req.json();
-    // console.log(data, "DATA");
-    const response = await fetch(`${data.file.url}`);
-    // console.log(response);
-    const blob = await response.blob();
-    // console.log(blob, "BLOG");
-    const loader = new PDFLoader(blob);
     // console.log(loader, "LOADER");
     const pageLevelDocs = await loader.load();
     // console.log(pageLevelDocs);
