@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# converse.ai made using okta
+
+### This repo is for my submission for the Okta AI Identity Hackathon which took place during September 23 - November 07, 2023 PDT
 
 ## Getting Started
 
-First, run the development server:
+### Either fork the repo or directly clone it
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Prerequisites
+
+**Node version 18.17 or later  
+**macOS, Windows (including WSL), and Linux are supported.
+
+### To directly clone the repo
+
+```shell
+git clone https://github.com/trace2798/okta_fullstack.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Install packages
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```shell
+npm i
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Setup .env file
 
-## Learn More
+```ts
 
-To learn more about Next.js, take a look at the following resources:
+DATABASE_URL=
+OKTA_CLIENT_ID=
+OKTA_CLIENT_SECRET=
+OKTA_ISSUER=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+NEXTAUTH_SECRET=
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+UPLOADTHING_SECRET=
+UPLOADTHING_APP_ID=
 
-## Deploy on Vercel
+ANYSCALE_API_KEY=
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+PINECONE_API_KEY=
+PINECONE_ENVIRONMENT=
+ANYSCALE_API_BASE=
+OPENAI_API_KEY=
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+STRIPE_API_KEY=
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+STRIPE_WEBHOOK_SECRET=
+```
+
+### Resources for env values:
+
+Check the official docs for the services mentioned.
+
+### Start the app
+
+```shell
+npm run dev
+```
+
+## Available commands
+
+Running commands with npm `npm run [command]`
+
+| command | description                              |
+| :------ | :--------------------------------------- |
+| `dev`   | Starts a development instance of the app |
+| `build` | To build your application                |
+| `start` | Starts a production instance of the app  |
+
+Youtube Demo Link: [Converse.ai](https://www.youtube.com/watch?v=S18FAtAkrBw)
