@@ -20,7 +20,7 @@ export default function Home() {
           <h3 className="text-xl mt-5 font-ranadeRegular">
             This is my submission for{" "}
             <a
-              href="https://hashnode.com/hackathons/outerbase"
+              href="https://oktahackathon2023.devpost.com/"
               target="_blank"
               className="text-lg md:text-2xl hover:underline font-satoshiBlack bg-gradient-to-r bg-clip-text text-transparent from-yellow-500 via-purple-500 to-red-500 animate-text"
             >
